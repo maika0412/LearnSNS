@@ -2,6 +2,7 @@
     // PHPプログラム
 $errors = [];
 
+//入力なしだったら
 if (!empty($_POST)) {
     $name = $_POST['input_name'];
     $email = $_POST['input_email'];
@@ -18,6 +19,15 @@ if ($email == '') {
 if ($password == '') {
         $errors['password'] = 'blank';
    }
+
+//字数警告
+   $count = strlen($password);
+   if ($password == '') {
+       $errors['password'] = 'blank';
+   }elseif ($count <4 || 16 <$count) {
+       $errors['password'] = 'length';
+   }
+
 }
 ?>
 
@@ -55,7 +65,10 @@ if ($password == '') {
                         <input type="password" name="input_password" class="form-control" id="password" placeholder="4 ~ 16文字のパスワード">
                         <?php if (isset($errors['password']) && $errors['password'] == 'blank'):?> 
                             <p class="text-danger">パスワードを入力してください</p>
-                        <?php endif; ?>
+                        <?php endif?>
+                        <?php if (isset($errors['password']) && $errors['password'] =='length'): ?>
+                            <p class="text-danger">パスワードは４文字以上１６字以内で入力してください。</p>
+                        <?php endif;?>
                     </div>
                     <div class="form-group">
                         <label for="img_name">プロフィール画像</label>
