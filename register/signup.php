@@ -1,7 +1,9 @@
 <?php
+session_start();
+
+date_default_timezone_set('Asia/Manila');
     // PHPプログラム
 $errors = [];
-
 //入力なしだったら
 if (!empty($_POST)) {
     $name = $_POST['input_name'];
@@ -12,11 +14,11 @@ if (!empty($_POST)) {
         $errors['name'] = 'blank';
    }
 
-if ($email == '') {
+    if ($email == '') {
         $errors['email'] = 'blank';
    }
 
-if ($password == '') {
+    if ($password == '') {
         $errors['password'] = 'blank';
    }
 
@@ -32,13 +34,28 @@ if ($password == '') {
    $file_name = $_FILES['input_img_name']['name'];
    if (!empty($file_name)) {
        //拡張子チェック
-    $file_type = substr($file_name, -3);
-    $file_type = strtolower($file_name);
-    if ($file_type!='jpg' && $file_type !='png' && $file_type !='gif') {
-        $errors['img=name'] = 'type';
+        $file_type = substr($file_name, -3);
+        $file_type = strtolower($file_name);
+        // if ($file_type != 'jpg' && $file_type != 'png' && $file_type != 'gif') {
+        //     $errors['img_name'] = 'type';
+        // }
+    } else {
+        $errors['img_name'] = 'blank';
     }
-   }else{
-    $errors['img_name'] = 'blank';
+
+   // var_dump($errors);die();
+   if (empty($errors)) {
+        $date_str = date('YmdHis');
+        $submit_file_name = $date_str.$file_name;
+        move_uploaded_file($_FILES['input_img_name']['tmp_name'],'../user_profile_img/'.$submit_file_name);
+   
+       $_SESSION['register']['name'] = $_POST[input_name];
+       $_SESSION['register']['email'] = $_POST[input_email];
+       $_SESSION['register']['password'] = $_POST[input_password];
+       $_SESSION['register']['img_name'] = $submit_file_name;
+
+       header('Location: check.php');
+       exit();
    }
 }
 ?>
@@ -56,7 +73,7 @@ if ($password == '') {
             <div class="row">
                  <div class="col-xs-8 col-xs-offset-2 thumbnail">
                 <h2 class="text-center content_header">アカウント作成</h2>
-                <form method="POST" action="signup.php" enctype="multipart/form-data">
+                <form method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">ユーザー名</label>
                         <input type="text" name="input_name" class="form-control" id="name" placeholder="山田 太郎">
