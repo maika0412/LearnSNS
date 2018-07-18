@@ -28,6 +28,18 @@ if ($password == '') {
        $errors['password'] = 'length';
    }
 
+//画像名を取得
+   $file_name = $_FILES['input_img_name']['name'];
+   if (!empty($file_name)) {
+       //拡張子チェック
+    $file_type = substr($file_name, -3);
+    $file_type = strtolower($file_name);
+    if ($file_type!='jpg' && $file_type !='png' && $file_type !='gif') {
+        $errors['img=name'] = 'type';
+    }
+   }else{
+    $errors['img_name'] = 'blank';
+   }
 }
 ?>
 
@@ -58,7 +70,6 @@ if ($password == '') {
                         <?php if (isset($errors['email']) && $errors['email'] == 'blank'):?> 
                             <p class="text-danger">メールアドレスを入力してください</p>
                         <?php endif; ?>
-                        
                     </div>
                     <div class="form-group">
                         <label for="password">パスワード</label>
@@ -72,7 +83,13 @@ if ($password == '') {
                     </div>
                     <div class="form-group">
                         <label for="img_name">プロフィール画像</label>
-                        <input type="file" name="input_img_name" id="img_name">
+                        <input type="file" name="input_img_name" id="img_name" >
+                        <?php if (isset($errors['img_name']) && $errors['img_name'] == 'blank'){ ?>
+                            <p class="text-danger"> 画像を選択してください。</p>
+                            <?php } ?>
+                            <?php if (isset($errors['img_name']) && $errors['img_name'] =='type') { ?>
+                                <p class="text-danger">拡張子が「jpg」 「png」 「gif」の画像を選択してください。</p>
+                            <?php } ?>
                     </div>
                     <input type="submit" class="btn btn-default" value="確認">
                     <a href="../signin.php" style="float: right; padding-top: 6px;" class="text-success">サインイン</a>
