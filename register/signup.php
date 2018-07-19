@@ -5,6 +5,14 @@ date_default_timezone_set('Asia/Manila');
     // PHPプログラム
 $errors = [];
 //入力なしだったら
+if (isset($_GET['action']) && $_GET['action'] == 'rewrite') {
+  $_POST['input_name'] = $_SESSION['register']['name'];
+  $_POST['input_email'] = $_SESSION['register']['email'];
+  $_POST['input_password'] = $_SESSION['register']['password'];
+
+$errors['rewrite'] = true;
+}
+
 if (!empty($_POST)) {
     $name = $_POST['input_name'];
     $email = $_POST['input_email'];
@@ -21,17 +29,21 @@ if (!empty($_POST)) {
     if ($password == '') {
         $errors['password'] = 'blank';
    }
-
 //字数警告
    $count = strlen($password);
    if ($password == '') {
        $errors['password'] = 'blank';
    }elseif ($count <4 || 16 <$count) {
-       $errors['password'] = 'length';
-   }
-
+         $errors['password'] = 'length';}
+         
 //画像名を取得
-   $file_name = $_FILES['input_img_name']['name'];
+    $file_name = '';
+       if (!isset($_GET['action'])) {
+         $file_name = $_FILES['input_img_name']['name'];
+       }
+       if (!empty($file_name)) {
+       }
+
    if (!empty($file_name)) {
        //拡張子チェック
         $file_type = substr($file_name, -3);
@@ -97,6 +109,7 @@ if (!empty($_POST)) {
                         <?php if (isset($errors['password']) && $errors['password'] =='length'): ?>
                             <p class="text-danger">パスワードは４文字以上１６字以内で入力してください。</p>
                         <?php endif;?>
+ 
                     </div>
                     <div class="form-group">
                         <label for="img_name">プロフィール画像</label>
