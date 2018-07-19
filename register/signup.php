@@ -3,7 +3,11 @@ session_start();
 
 date_default_timezone_set('Asia/Manila');
     // PHPプログラム
-$errors = [];
+$name = '';
+$email = '';
+$errors = array();
+
+
 //入力なしだったら
 if (isset($_GET['action']) && $_GET['action'] == 'rewrite') {
   $_POST['input_name'] = $_SESSION['register']['name'];
@@ -12,6 +16,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'rewrite') {
 
 $errors['rewrite'] = true;
 }
+
+
 
 if (!empty($_POST)) {
     $name = $_POST['input_name'];
@@ -35,7 +41,7 @@ if (!empty($_POST)) {
        $errors['password'] = 'blank';
    }elseif ($count <4 || 16 <$count) {
          $errors['password'] = 'length';}
-         
+
 //画像名を取得
     $file_name = '';
        if (!isset($_GET['action'])) {
@@ -85,17 +91,17 @@ if (!empty($_POST)) {
             <div class="row">
                  <div class="col-xs-8 col-xs-offset-2 thumbnail">
                 <h2 class="text-center content_header">アカウント作成</h2>
-                <form method="POST" action="" enctype="multipart/form-data">
+                <form method="POST" action="signup.php" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">ユーザー名</label>
-                        <input type="text" name="input_name" class="form-control" id="name" placeholder="山田 太郎">
+                        <input type="text" name="input_name" class="form-control" id="name" placeholder="山田 太郎" value="<?php echo htmlspecialchars($name); ?>">
                         <?php if (isset($errors['name']) && $errors['name'] == 'blank'):?> 
                             <p class="text-danger">ユーザー名を入力してください</p>
                         <?php endif; ?>
                     </div>
                     <div class="form-group">
                         <label for="email">メールアドレス</label>
-                        <input type="email" name="input_email" class="form-control" id="email" placeholder="example@gmail.com">
+                        <input type="email" name="input_email" class="form-control" id="email" placeholder="example@gmail.com" value="<?php echo htmlspecialchars($email); ?>">
                         <?php if (isset($errors['email']) && $errors['email'] == 'blank'):?> 
                             <p class="text-danger">メールアドレスを入力してください</p>
                         <?php endif; ?>
@@ -109,7 +115,9 @@ if (!empty($_POST)) {
                         <?php if (isset($errors['password']) && $errors['password'] =='length'): ?>
                             <p class="text-danger">パスワードは４文字以上１６字以内で入力してください。</p>
                         <?php endif;?>
- 
+                        <?php if (!empty($errors)): ?>
+                          <p class="text-danger">パスワードを再度入力してください。</p>
+                        <?php endif;?>
                     </div>
                     <div class="form-group">
                         <label for="img_name">プロフィール画像</label>
