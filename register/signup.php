@@ -1,5 +1,6 @@
 <?php
 session_start();
+    require('../dbconnect.php');
 
 date_default_timezone_set('Asia/Manila');
     // PHPプログラム
