@@ -2,6 +2,13 @@
 
 session_start();
 require('dbconnect.php');
+
+//timlelineに直接飛んだ時にsigninにリダイレクト
+if (!isset($_SESSION['id'])) {
+        header('Location: signin.php');
+        exit();
+    }
+
 $sql = 'SELECT * FROM `users` WHERE `id` =?';
 $data = array($_SESSION['id']);
     $stmt = $dbh->prepare($sql);
@@ -13,7 +20,7 @@ $data = array($_SESSION['id']);
  $errors = array();
 
 //ユーザーが投稿ボタンを押したら発動
- if (!empty($POST)) {
+ if (!empty($_POST)) {
 
 //バリデーション
      $feed = $_POST['feed'];//投稿データ
@@ -90,8 +97,10 @@ $data = array($_SESSION['id']);
           <form method="POST" action="">
             <div class="form-group">
               <textarea name="feed" class="form-control" rows="3" placeholder="Happy Hacking!" style="font-size: 24px;"></textarea><br>
-              <?php if (isset($errors['feed']) && $errors['feed'] == 'blank'){ ?> <p class="alert alert-danger">投稿データを入力してください</p>
-          <?php }?>
+              <?php if (isset($errors['feed']) && $errors['feed'] == 'blank') { ?>
+                <p class="alert alert-danger">投稿データを入力してください</p>
+              <?php } ?>
+
             </div>
             <input type="submit" value="投稿する" class="btn btn-primary">
           </form>
