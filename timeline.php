@@ -28,12 +28,38 @@ $data = array($_SESSION['id']);
      //投稿のチェック
      if ($feed !='') {
          //投稿処理
+       $sql = 'INSERT INTO `feeds` SET `feed`=?, `user_id`=?, `created`=NOW()';
+            $data = array($feed, $signin_user['id']);
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute($data);
+ 
+            header('Location: timeline.php');
+            exit();
+
      }else{
         $errors['feed'] = 'blank';
      }
  }
 
+ //Left Joinで全件取得
+ $sql = 'SELECT `f`.*, `u`.`name`, `u`.`img_name` FROM `feeds` AS `f` LEFT JOIN `users` AS `u` ON `f`.`user_id`=`u`.`id` ORDER BY `created` DESC';
 
+//一覧表示
+$date = array();
+$stmt = $dbh->prepare($sql);
+$stmt->execute($data);
+
+//表示用の配列を初期化
+  $feeds = array();
+
+  while (true) {
+  $record = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($record == false) {
+    break;
+  }
+  $feeds[] = $record;
+}
+  
 ?>
 
 
