@@ -1,4 +1,5 @@
 <?php
+echo test;
 
 session_start();
 require('dbconnect.php');
@@ -131,11 +132,19 @@ $stmt->execute($data);
             <input type="submit" value="投稿する" class="btn btn-primary">
           </form>
         </div>
+<<<<<<< HEAD
              <?php foreach($feeds as $feed){ ?>
           <div class="thumbnail">
             <div class="row">
               <div class="col-xs-1">
                  <img src="user_profile_img/<?php echo $feed['img_name']; ?>" width="40">
+=======
+        <?php foreach ($feeds as $feed) {?>
+          <div class="thumbnail">
+            <div class="row">
+              <div class="col-xs-1">
+                <img src=" width="40">
+>>>>>>> pr2
               </div>
               <div class="col-xs-11">
                <?php echo $feed['name']; ?><br>
