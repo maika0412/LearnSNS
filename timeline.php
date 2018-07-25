@@ -131,13 +131,14 @@ $stmt->execute($data);
             <input type="submit" value="投稿する" class="btn btn-primary">
           </form>
         </div>
+        <?php foreach ($feeds as $feed) { ?>
           <div class="thumbnail">
             <div class="row">
               <div class="col-xs-1">
-                <img src="https://placehold.jp/40x40.png" width="40">
+                <img src="user_profile_img/<?php echo $feed['img_name'];?>"width="40">
               </div>
               <div class="col-xs-11">
-                野原ひろし<br>
+                <?php echo $feed['name'];?><br>
                 <a href="#" style="color: #7F7F7F;">2018-03-03</a>
               </div>
             </div>
